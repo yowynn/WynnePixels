@@ -10,7 +10,7 @@ namespace Test
         static void Main(string[] args)
         {
             Console.WriteLine("Hello World!");
-            var imgfile = @"C:\Users\Yuhong\Desktop\g1\a377285f2e72728a749b8d0659792d53.jpg";
+            var imgfile = @"D:\WynnePixels\target.png";
             var img = WynnePixels.ReadImage(imgfile);
             img = WynnePixels.ScaleTo(img, 88, 88);
             var colorList = new List<Color>
@@ -47,8 +47,11 @@ namespace Test
                 WynnePixels.GetColor("494b58"), // 30 深灰
                 WynnePixels.GetColor("4b1c78"), // 31 深紫
             };
-            img = WynnePixels.MapColor(img, colorList);
-
+            img = WynnePixels.MapColor(img, colorList, out var usage);
+            for (int i = 0; i < usage.Length; i++)
+            {
+                Console.WriteLine($"{i + 1}\t{usage[i]}");
+            }
             img.Save("out.bmp",ImageFormat.Bmp);
         }
     }

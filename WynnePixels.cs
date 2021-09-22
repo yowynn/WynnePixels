@@ -46,6 +46,25 @@ public class WynnePixels
         }
         return b;
     }
+
+    public static Image MapColor(Image img, List<Color> colorList, out int[] usage)
+    {
+        usage = new int[colorList.Count];
+        var b = (Bitmap)img;
+        for (int x = 0; x < img.Width; x++)
+        {
+            for (int y = 0; y < img.Height; y++)
+            {
+                var color = b.GetPixel(x, y);
+                var index = FindSimilarColor(color, colorList);
+                usage[index]++;
+                var newcolor = colorList[index];
+                b.SetPixel(x, y, newcolor);
+            }
+        }
+        return b;
+    }
+
     public static int FindSimilarColor(Color color, List<Color> colorList)
     {
         int index = -1;
@@ -57,9 +76,9 @@ public class WynnePixels
             var dg = Math.Abs(c.G - color.G);
             var db = Math.Abs(c.B - color.B);
             var da = Math.Abs(c.A - color.A);
-            var tardif = dr + dg + db + da;
+            //var tardif = dr + dg + db + da;
             //var tardif = dr * dr + dg * dg + db * db + da * da;
-            //var tardif = CIELAB(c, color);
+            var tardif = CIELAB(c, color);
             if (tardif < diff)
             {
                 diff = tardif;
